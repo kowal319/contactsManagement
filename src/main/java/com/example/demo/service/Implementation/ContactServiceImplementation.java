@@ -3,6 +3,7 @@ package com.example.demo.service.Implementation;
 import com.example.demo.entity.Contact;
 import com.example.demo.repository.ContactRepository;
 import com.example.demo.service.ContactService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public class ContactServiceImplementation implements ContactService {
 
     private ContactRepository contactRepository;
 
+    @Autowired
     public ContactServiceImplementation(ContactRepository contactRepository) {
         this.contactRepository = contactRepository;
     }
