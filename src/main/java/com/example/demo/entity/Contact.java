@@ -3,8 +3,8 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table( name = "concact")
-public class Concact {
+@Table( name = "contact")
+public class Contact {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,10 +16,10 @@ public class Concact {
     @Column(nullable = false, unique = true)
     private String email;
 
-    public Concact() {
+    public Contact() {
     }
 
-    public Concact(Long id, String name, String email) {
+    public Contact(Long id, String name, String email) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -51,7 +51,7 @@ public class Concact {
 
     @Override
     public String toString() {
-        return "Concact{" +
+        return "Conctact{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
