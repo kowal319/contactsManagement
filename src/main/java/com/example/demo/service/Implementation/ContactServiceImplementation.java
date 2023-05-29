@@ -28,7 +28,25 @@ public class ContactServiceImplementation implements ContactService {
 
     @Override
     public Contact createContact(Contact contact) {
+        if (contact.getName() == null) {
+            throw new IllegalArgumentException("Name cannot be null");
+        }
+        if (contact.getEmail() == null) {
+            throw new IllegalArgumentException("Email cannot be null");
+        }
+        if(!isValidEmail(contact.getEmail())){
+            throw new IllegalArgumentException("Invalid email format");
+        }
+
+        if(contactRepository.findByEmail(contact.getEmail()) != null){
+            throw new IllegalArgumentException("Email address must be unique");
+        }
         return contactRepository.save(contact);
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}";
+        return email.matches(emailRegex);
     }
 
 
@@ -36,7 +54,7 @@ public class ContactServiceImplementation implements ContactService {
     public String deleteContact(Long id) {
         if(contactRepository.findById(id).isPresent()){
             contactRepository.deleteById(id);
-            return "Contact deleted sucessfuly";
+            return "Contact deleted successfully";
         }
             return "Contact not exist";
         }

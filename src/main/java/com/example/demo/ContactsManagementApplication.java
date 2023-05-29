@@ -23,21 +23,18 @@ public class ContactsManagementApplication {
 
 
 	}
-	@PostConstruct
-	public void run() {
-		// Tworzenie i dodawanie przykładowych kontaktów do bazy danych
-		Contact contact1 = new Contact("Adam Malysz", "malysz123@example.com");
-		Contact contact2 = new Contact("Mariusz Pudzianowski", "pudzian.mario2@example.com");
-
-		contactRepository.save(contact1);
-		contactRepository.save(contact2);
-
-		// Wyświetlanie wszystkich kontaktów
-		List<Contact> contacts = contactRepository.findAll();
-		for (Contact contact : contacts) {
-			System.out.println(contact);
-		}
-	}
-
-
+//	@PostConstruct
+//	public void run() {
+//
+//		Contact contact1 = new Contact("Frankie Dejong", "frankie123@example.com");
+//		Contact contact2 = new Contact("Robert Lewandowski", "Lewyy2@example.com");
+//
+//		contactRepository.save(contact1);
+//		contactRepository.save(contact2);
+//
+//		List<Contact> contacts = contactRepository.findAll();
+//		for (Contact contact : contacts) {
+//			System.out.println(contact);
+//		}
+//	}
 	}
