@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ContactServiceImplementation implements ContactService {
@@ -34,21 +33,12 @@ public class ContactServiceImplementation implements ContactService {
         if (contact.getEmail() == null) {
             throw new IllegalArgumentException("Email cannot be null");
         }
-        if(!isValidEmail(contact.getEmail())){
-            throw new IllegalArgumentException("Invalid email format");
-        }
 
         if(contactRepository.findByEmail(contact.getEmail()) != null){
             throw new IllegalArgumentException("Email address must be unique");
         }
         return contactRepository.save(contact);
     }
-
-    private boolean isValidEmail(String email) {
-        String emailRegex = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}";
-        return email.matches(emailRegex);
-    }
-
 
     @Override
     public String deleteContact(Long id) {

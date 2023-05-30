@@ -26,7 +26,7 @@ public class ContactsManagementApplication {
 //	@PostConstruct
 //	public void run() {
 //
-//		Contact contact1 = new Contact("Frankie Dejong", "frankie123@example.com");
+//		Contact contact1 = new Contact("Frankie Dejong", "frankie12@gmail.com");
 //		Contact contact2 = new Contact("Robert Lewandowski", "Lewyy2@example.com");
 //
 //		contactRepository.save(contact1);

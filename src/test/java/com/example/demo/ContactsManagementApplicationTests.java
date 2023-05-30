@@ -4,6 +4,7 @@ import com.example.demo.entity.Contact;
 import com.example.demo.repository.ContactRepository;
 import com.example.demo.service.ContactService;
 import com.example.demo.service.Implementation.ContactServiceImplementation;
+import jakarta.validation.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,8 +13,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -25,11 +27,14 @@ class ContactsManagementApplicationTests {
 
 	private ContactService contactService;
 	private ContactRepository contactRepository;
+    private Validator validator;
 
 	@BeforeEach
 	public void setUp() {
 		contactRepository = Mockito.mock(ContactRepository.class);
 		contactService = new ContactServiceImplementation(contactRepository);
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
 	}
 
 	@Test
@@ -81,24 +86,44 @@ class ContactsManagementApplicationTests {
 		Contact contact = new Contact(null, "messi@barca.com");
 
 		// When/Then
-		Assertions.assertThrows(IllegalArgumentException.class, () -> {
+		assertThrows(IllegalArgumentException.class, () -> {
 			contactService.createContact(contact);
 		});
 	}
 
-	@Test
-	public void testCreateContactWithInvalidEmail() {
-		// Given
-		Contact contact = new Contact("Leo Messi", "email-email");
+    @Test
+    public void testValidEmail(){
+        //Given
+        String validEmail = "valid@email.com";
+        Contact contact = new Contact();
+        contact.setEmail(validEmail);
 
-		// When/Then
-		Assertions.assertThrows(IllegalArgumentException.class, () -> {
-			contactService.createContact(contact);
-		});
-	}
+        //When
+        String email = contact.getEmail();
+
+        //Then
+        Assertions.assertEquals(validEmail, email);
+    }
+
+    @Test
+    public  void testInvalidEmail(){
+        //Given
+        String invalidEmail = "invalid.email";
+        Contact contact  = new Contact();
+        contact.setEmail(invalidEmail);
+
+        //When/Then
+       Set<ConstraintViolation<Contact>> violations = validator.validate(contact);
+       Assertions.assertFalse(violations.isEmpty());
+       Assertions.assertEquals(1, violations.size());
+
+       ConstraintViolation<Contact> violation = violations.iterator().next();
+       Assertions.assertEquals("email", violation.getPropertyPath().toString());
+       Assertions.assertEquals("musi być poprawnie sformatowanym adresem e-mail", violation.getMessage());
+    }
 
 	@Test
-	void createContact_WithExistingEmail_ThrowsException() {
+	void testWithExistingEmailThrowsException() {
 		// Arrange
 		String email = "barca@barca.com";
 		Contact existingContact = new Contact("Leo Messi", email);
@@ -107,16 +132,16 @@ class ContactsManagementApplicationTests {
 		Contact newContact = new Contact("Pedri Gonzalez", email);
 
 		// Act and Assert
-		Assertions.assertThrows(IllegalArgumentException.class, () -> contactService.createContact(newContact));
+		assertThrows(IllegalArgumentException.class, () -> contactService.createContact(newContact));
 	}
 
 	@Test
-	void createContact_WithNullEmail_ThrowsException() {
+	void testWithNullEmailThrowsException() {
 		// Arrange
 		Contact contact = new Contact("Leo Messi", null);
 
 		// Act and Assert
-		Assertions.assertThrows(IllegalArgumentException.class, () -> contactService.createContact(contact));
+		assertThrows(IllegalArgumentException.class, () -> contactService.createContact(contact));
 	}
 
 }
