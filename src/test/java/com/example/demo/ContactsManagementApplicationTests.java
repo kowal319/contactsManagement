@@ -124,23 +124,21 @@ class ContactsManagementApplicationTests {
 
 	@Test
 	void testWithExistingEmailThrowsException() {
-		// Arrange
+
 		String email = "barca@barca.com";
 		Contact existingContact = new Contact("Leo Messi", email);
 		when(contactRepository.findByEmail(email)).thenReturn(existingContact);
 
 		Contact newContact = new Contact("Pedri Gonzalez", email);
 
-		// Act and Assert
+
 		assertThrows(IllegalArgumentException.class, () -> contactService.createContact(newContact));
 	}
 
 	@Test
 	void testWithNullEmailThrowsException() {
-		// Arrange
 		Contact contact = new Contact("Leo Messi", null);
 
-		// Act and Assert
 		assertThrows(IllegalArgumentException.class, () -> contactService.createContact(contact));
 	}
 

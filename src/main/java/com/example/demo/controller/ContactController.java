@@ -8,23 +8,24 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
+@RequestMapping("/contacts")
 public class ContactController {
 
     @Autowired
     private ContactService contactService;
 
-    @GetMapping("/contacts")
+    @GetMapping()
     public List<Contact> getAllContacts(){
         return contactService.findAllContacts();
     }
 
-    @PostMapping("/contacts")
+    @PostMapping()
     public Contact saveContact(@RequestBody Contact contact){
         return contactService.createContact(contact);
     }
 
 
-    @DeleteMapping("/contacts/{id}")
+    @DeleteMapping("/{id}")
     public String deleteContact(@PathVariable("id") Long id){
         return contactService.deleteContact(id);
     }
